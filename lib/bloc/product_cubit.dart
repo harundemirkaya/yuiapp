@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:yuiapp/bloc/services/getProduct.dart';
+import 'package:yuiapp/bloc/services/getData.dart';
 
+import '../models/category_model.dart';
 import '../models/product_model.dart';
 
 abstract class ProductState {
@@ -20,6 +21,11 @@ class ProductsGet extends ProductState {
   const ProductsGet(this.response);
 }
 
+class CategoriesGet extends ProductState {
+  final List<CategoryModel> response;
+  const CategoriesGet(this.response);
+}
+
 class ProductError extends ProductState {
   final String message;
   const ProductError(this.message);
@@ -33,10 +39,15 @@ class ProductGet extends ProductState {
 class ProductCubit extends Cubit<ProductState> {
   final YuiRepo _yuiRepo;
   ProductCubit(this._yuiRepo) : super(const ProductInitial());
-
   Future<List<ProductModel>> getProducts() async {
     final response = await _yuiRepo.getProducts();
     emit(ProductsGet(response));
+    return response;
+  }
+
+  Future<List<CategoryModel>> getCategories() async {
+    final response = await _yuiRepo.getCategories();
+    emit(CategoriesGet(response));
     return response;
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/product_cubit.dart';
-import '../bloc/services/getProduct.dart';
+import '../bloc/services/getData.dart';
 import '../components/defaultSizedBox.dart';
 import '../components/title_appbar.dart';
 import '../utils/constant.dart';
@@ -37,9 +37,8 @@ class _SeeAllState extends State<SeeAll> {
           builder: (context, state) {
             if (state is ProductLoading) {
               return const Center(child: CircularProgressIndicator());
-            } 
-            else if (state is ProductsGet) {
-              final products = context.read<ProductsGet>().response;
+            } else if (state is ProductsGet) {
+              final products = state.response;
 
               return ListView(
                 scrollDirection: Axis.vertical,
@@ -106,9 +105,8 @@ class _SeeAllState extends State<SeeAll> {
                       )),
                 ],
               );
-            }
-            else {
-              return Text('Ürün yok');
+            } else {
+              return ListView();
             }
           },
         ),
